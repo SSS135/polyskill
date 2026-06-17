@@ -1,12 +1,19 @@
 name: Publish
 
-# Publishes to npm on a version tag using npm Trusted Publishing (OIDC) —
-# no NPM_TOKEN secret. The npm package must first be registered as a trusted
-# publisher for this repo/workflow on npmjs.com (one-time setup; the very first
-# publish may need a manual `npm publish` with a token, then switch to OIDC).
+# Auto-publish to npm on every push to main — but only when package.json's
+# version is not already on the registry. So ordinary pushes are green no-ops
+# and bumping the version is what triggers a release.
+#
+# Uses npm Trusted Publishing (OIDC): no NPM_TOKEN secret. Requires a one-time
+# setup that cannot be automated:
+#   1. A manual first `npm publish` to create the package (Trusted Publishing
+#      can't be configured for a package that doesn't exist yet).
+#   2. Registering this repo + workflow as a trusted publisher on npmjs.com
+#      (package -> Settings -> Trusted Publisher).
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,8 +28,22 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-      # Trusted publishing requires npm >= 11.5.1; ensure we are current.
+      # Trusted Publishing requires npm >= 11.5.1; ensure we are current.
       - run: npm install -g npm@latest
       - run: npm ci
       - run: npm test
-      - run: npm publish --provenance --access public
+      - run: npm run typecheck
+      - name: Decide whether this version needs publishing
+        id: guard
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "polyskill@${VERSION}" version >/dev/null 2>&1; then
+            echo "polyskill@${VERSION} already on npm — skipping."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "polyskill@${VERSION} is new — publishing."
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish
+        if: steps.guard.outputs.publish == 'true'
+        run: npm publish --provenance --access public

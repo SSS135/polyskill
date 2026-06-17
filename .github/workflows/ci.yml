@@ -1,9 +1,12 @@
 name: CI
 
+# Validate pull requests and feature-branch pushes. Pushes to main are tested
+# by the Publish workflow instead, so they are excluded here to avoid a
+# duplicate run.
 on:
-  push:
-    branches: [main]
   pull_request:
+  push:
+    branches-ignore: [main]
 
 jobs:
   test:
