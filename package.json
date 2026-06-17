@@ -1,0 +1,46 @@
+{
+  "name": "polyskill",
+  "version": "0.1.0",
+  "description": "Compile author-once skills and subagents into per-harness agent configs (Claude Code, Codex), with inline per-target macros.",
+  "type": "module",
+  "bin": {
+    "polyskill": "src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "src",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "claude-code",
+    "codex",
+    "skills",
+    "subagents",
+    "agents",
+    "ai",
+    "cli",
+    "codegen"
+  ],
+  "license": "MIT",
+  "author": "SSS135 (https://github.com/SSS135)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SSS135/polyskill.git"
+  },
+  "homepage": "https://github.com/SSS135/polyskill#readme",
+  "bugs": {
+    "url": "https://github.com/SSS135/polyskill/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "typescript": "^5"
+  }
+}

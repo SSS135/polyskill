@@ -1,0 +1,4 @@
+# Normalize everything to LF — this is a Node project, and the CLI shebang must
+# stay LF-terminated to run on Linux/macOS.
+* text=auto eol=lf
+*.png binary
