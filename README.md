@@ -27,14 +27,15 @@ Everything outside a macro tag is shared verbatim. Tags are expanded only inside
 
 ## Usage
 
-Zero install — run it with `npx`. Always pass `--yes` in scripts/CI so npx does
-not stall on its install prompt, and pin an exact version for reproducible
-builds:
+Zero install — run it with `npx`. Pass `--yes` in scripts/CI so npx does not
+stall on its install prompt:
 
 ```bash
-npx --yes polyskill@0.1.0            # walk up for polyskill.config.json
+npx --yes polyskill                  # walk up for polyskill.config.json
 npx --yes polyskill --source ./a --out ./dist --target claude
 ```
+
+Pin a version (`polyskill@1.2.3`) if you want reproducible builds.
 
 Before publishing, you can run straight from GitHub:
 
