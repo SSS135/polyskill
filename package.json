@@ -1,6 +1,6 @@
 {
   "name": "polyskill",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Compile author-once skills and subagents into per-harness agent configs (Claude Code, Codex), with inline per-target macros.",
   "type": "module",
   "bin": {
